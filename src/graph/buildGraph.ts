@@ -21,6 +21,7 @@ export function buildBallNodes(): Node[] {
         type: 'default',
         position: { x: 0, y: 0 }, // layout engine handles later
         data: {
+            label: ball.name,
             kind: 'base',
             name: ball.name,
             description: ball.description,
@@ -34,6 +35,7 @@ export function buildBallNodes(): Node[] {
         type: 'default',
         position: { x: 0, y: 0 },
         data: {
+            label: ball.name,
             kind: 'evolved',
             name: ball.name,
             description: ball.description,

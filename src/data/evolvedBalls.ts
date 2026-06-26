@@ -45,7 +45,7 @@ export const EVOLVED_BALLS: EvolvedBallDefinition[] = [
         damageTypes: ['Base'],
         statusEffects: ['InstantKill'],
         recipes: [
-            { requires: ['dark', 'sun'] },
+            { requires: ['sun', ['dark', 'time']] },
         ],
         cooldownSeconds: 7,
     },
@@ -105,7 +105,7 @@ export const EVOLVED_BALLS: EvolvedBallDefinition[] = [
         description:
             'Explodes into 3-6 fireworks. Fireworks target random enemies, dealing 20-30 damage and applying 1 stack of burn. Burnt units are dealt 7-11 damage per stack per second.',
         damageTypes: ['Base'],
-        statusEffects: ['BabyBallSpawn', 'Burn'],
+        statusEffects: ['FireworkSpawn', 'Burn'],
         recipes: [
             { requires: ['burn', 'egg_sac'] },
         ],
@@ -167,7 +167,7 @@ export const EVOLVED_BALLS: EvolvedBallDefinition[] = [
         damageTypes: ['Base'],
         statusEffects: ['Freeze'],
         recipes: [
-            { requires: ['freeze', 'earthquake'] },
+            { requires: ['freeze', ['earthquake', 'stone']] },
         ],
     },
 
@@ -215,7 +215,7 @@ export const EVOLVED_BALLS: EvolvedBallDefinition[] = [
         damageTypes: ['AOE'],
         statusEffects: ['Burn'],
         recipes: [
-            { requires: ['burn', 'wind'] },
+            { requires: ['burn', ['wind', 'time']] },
         ],
     },
 
@@ -261,7 +261,7 @@ export const EVOLVED_BALLS: EvolvedBallDefinition[] = [
         description:
             'Attaches up to 1 leech onto enemies it hits, which add 2 stacks of bleed per seconds (max 24 stacks)',
         damageTypes: ['Base'],
-        statusEffects: ['Bleed'],
+        statusEffects: ['Leech', 'Bleed'],
         recipes: [
             { requires: ['brood_mother', 'bleed'] },
         ],
@@ -285,9 +285,9 @@ export const EVOLVED_BALLS: EvolvedBallDefinition[] = [
         description:
             'Inflicts lovestruck on hit enemies for 20 seconds. Lovestruck units have a 50% chance of healing you for 5 health when they attack',
         damageTypes: ['Base'],
-        statusEffects: ['Lifesteal'],
+        statusEffects: ['Lovestruck'],
         recipes: [
-            { requires: ['charm', ['light', 'lightning']] },
+            { requires: ['charm', ['light', 'lightning', 'time']] },
         ],
     },
 
@@ -420,7 +420,7 @@ export const EVOLVED_BALLS: EvolvedBallDefinition[] = [
         damageTypes: ['Base', 'AOE'],
         statusEffects: ['Blind'],
         recipes: [
-            { requires: ['earthquake', 'wind'] },
+            { requires: [['earthquake', 'stone'], 'wind'] },
         ],
     },
 
@@ -578,6 +578,139 @@ export const EVOLVED_BALLS: EvolvedBallDefinition[] = [
         statusEffects: ['Freeze'],
         recipes: [
             { requires: ['freeze', 'ghost'] },
+        ],
+    },
+
+    {
+        id: 'banshee',
+        name: 'Banshee',
+        description:
+            'Curses all enemies while on the field when launched. Cursed enemies are dealt 150-300 after being hit 6 times.',
+        damageTypes: ['Base'],
+        statusEffects: ['Curse'],
+        recipes: [
+            { requires: ['phantom', 'wraith'] },
+        ],
+    },
+
+    {
+        id: 'erosion',
+        name: 'Erosion',
+        description:
+            "Passes through enemies. Deals 3% of enemy's current health as bonus damage on hit.",
+        damageTypes: ['Base'],
+        statusEffects: [],
+        recipes: [
+            { requires: ['time', 'wind'] },
+        ],
+    },
+
+    {
+        id: 'heart_swallower',
+        name: 'Heart Swallower',
+        description:
+            'Saps enemies on hit, with a 40% chance of stealing 1 health and reducing their attack damage by 20%. Lifesteal chance only applies once per enemy.',
+        damageTypes: ['Base'],
+        statusEffects: ['Lifesteal', 'AttackDown'],
+        recipes: [
+            { requires: ['bleed', 'ghost'] },
+        ],
+    },
+
+    {
+        id: 'nosferatu',
+        name: 'Nosferatu',
+        description:
+            'Spawns a vampire bat each bounce. Vampire bats fly towards a random enemy, dealing 132-176 damage on hit, turning into a Vampire Lord.',
+        damageTypes: ['Base'],
+        statusEffects: ['VampireBatSpawn'],
+        recipes: [
+            { requires: ['vampire_lord', 'spider_queen', 'mosquito_king'] },
+        ],
+    },
+
+    {
+        id: 'reaper',
+        name: 'Reaper',
+        description:
+            'Has a 10% chance to kill enemies on impact, healing you for 5 health.',
+        damageTypes: ['Base'],
+        statusEffects: ['InstantKill', 'Heal'],
+        recipes: [
+            { requires: ['soul_sucker', 'heart_swallower'] },
+        ],
+    },
+
+    {
+        id: 'sniper',
+        name: 'Sniper',
+        description:
+            'Pierces enemies and shoots 3-7 sniper baby balls after hitting a wall. Sniper baby balls pierce enemies but are destroyed upon hitting a wall.',
+        damageTypes: ['Base'],
+        statusEffects: ['SniperBabyBallSpawn'],
+        recipes: [
+            { requires: ['shotgun', 'assassin'] },
+        ],
+    },
+
+    {
+        id: 'time_bomb',
+        name: 'Time Bomb',
+        description:
+            'Throws a time bomb every few seconds, which explodes after a delay, dealing 80-120 damage to nearby enemies.',
+        damageTypes: ['Base', 'AOE'],
+        statusEffects: ['TimeBombSpawn', 'TimeSnare'],
+        recipes: [
+            { requires: ['time', 'bomb'] },
+        ],
+    },
+
+    {
+        id: 'timestop',
+        name: 'Timestop',
+        description:
+            'Freezes everything on the field for 5.0 seconds but destroys itself after hitting an enemy. Has a 30 second cooldown before it can be shot again.',
+        damageTypes: ['Base'],
+        statusEffects: ['Timestop'],
+        recipes: [
+            { requires: ['time', 'freeze'] },
+        ],
+        cooldownSeconds: 30,
+    },
+
+    {
+        id: 'venom',
+        name: 'Venom',
+        description:
+            'Applies 1 stack of venom on hit (max 8 stacks). Each stack deals 3-6 damage per second and slows down enemies.',
+        damageTypes: ['Base'],
+        statusEffects: ['Venom', 'Slow'],
+        recipes: [
+            { requires: ['poison', 'freeze'] },
+        ],
+    },
+
+    {
+        id: 'warp',
+        name: 'Warp',
+        description:
+            'After each hit, warps to a random spot on the field and speeds up by 5%.',
+        damageTypes: ['Base'],
+        statusEffects: [],
+        recipes: [
+            { requires: ['time', 'light'] },
+        ],
+    },
+
+    {
+        id: 'x_ray',
+        name: 'X Ray',
+        description:
+            'Emits an X-shaped laser on hit, which deals 50-75 damage to enemies and applies 1 stack of radiation (max 5 stacks). Radiation causes enemies to receive 10% more damage from all sources per stack.',
+        damageTypes: ['Base'],
+        statusEffects: ['Radiation'],
+        recipes: [
+            { requires: ['holy_laser', 'laser_beam'] },
         ],
     },
 ]

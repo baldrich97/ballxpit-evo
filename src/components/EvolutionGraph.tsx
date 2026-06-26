@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from 'react'
+import { useMemo, useCallback, useEffect } from 'react'
 import ReactFlow, {
     Background,
     Controls,
@@ -24,16 +24,17 @@ dagreGraph.setDefaultEdgeLabel(() => ({}))
 const NODE_WIDTH = 220
 const NODE_HEIGHT = 80
 
-function styleNode(node: Node): Node {
+function styleNode(node: Node, owned?: ReadonlySet<string>): Node {
     const isAOE = node.data?.damageTypes?.includes('AOE')
+    const isOwned = owned?.has(node.id) ?? false
 
     return {
         ...node,
         style: {
             borderRadius: 8,
             padding: 8,
-            border: '2px solid #333',
-            background: isAOE ? '#1f2937' : '#111827',
+            border: isOwned ? '2px solid #34d399' : '2px solid #333',
+            background: isOwned ? '#064e3b' : isAOE ? '#1f2937' : '#111827',
             color: '#f9fafb',
             width: NODE_WIDTH,
             height: NODE_HEIGHT,
@@ -42,7 +43,7 @@ function styleNode(node: Node): Node {
 }
 
 
-function layoutGraph(nodes: Node[], edges: Edge[]) {
+function layoutGraph(nodes: Node[], edges: Edge[], owned?: ReadonlySet<string>) {
     dagreGraph.setGraph({
         rankdir: 'LR',
         nodesep: 60,
@@ -65,13 +66,16 @@ function layoutGraph(nodes: Node[], edges: Edge[]) {
     return nodes.map(node => {
         const pos = dagreGraph.node(node.id)
 
-        return styleNode({
-            ...node,
-            position: {
-                x: pos.x - NODE_WIDTH / 2,
-                y: pos.y - NODE_HEIGHT / 2,
+        return styleNode(
+            {
+                ...node,
+                position: {
+                    x: pos.x - NODE_WIDTH / 2,
+                    y: pos.y - NODE_HEIGHT / 2,
+                },
             },
-        })
+            owned,
+        )
     })
 }
 
@@ -80,24 +84,34 @@ function layoutGraph(nodes: Node[], edges: Edge[]) {
 // Component
 // --------------------
 
-export default function EvolutionGraph() {
+interface Props {
+    ownedIds?: ReadonlySet<string>
+    onSelect?: (id: string) => void
+}
+
+export default function EvolutionGraph({ ownedIds, onSelect }: Props) {
     const graph = useMemo(() => buildBallGraph(), [])
 
     const layoutedNodes = useMemo(
-        () => layoutGraph(graph.nodes, graph.edges),
-        [graph.nodes, graph.edges]
+        () => layoutGraph(graph.nodes, graph.edges, ownedIds),
+        [graph.nodes, graph.edges, ownedIds]
     )
 
-    const [nodes, , onNodesChange] = useNodesState(layoutedNodes)
+    const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes)
     const [edges, , onEdgesChange] = useEdgesState(graph.edges)
+
+    useEffect(() => {
+        setNodes(layoutedNodes)
+    }, [layoutedNodes, setNodes])
 
     // --------------------
     // Interaction hooks
     // --------------------
 
-    const onNodeClick = useCallback((_: any, node: Node) => {
-        console.log('Clicked:', node.id)
-    }, [])
+    const onNodeClick = useCallback(
+        (_: unknown, node: Node) => onSelect?.(node.id),
+        [onSelect]
+    )
 
     return (
         <ReactFlow

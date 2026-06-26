@@ -1,63 +1,45 @@
 import BallIcon from './BallIcon'
-import type { EvolvedBallDefinition } from '../data/types'
+import RecipeRow from './RecipeRow'
+import { BadgeRow } from './badges'
+import type { EvolvedBallDefinition, FusionRecipe } from '../data/types'
 
 interface Props {
     evolution: EvolvedBallDefinition
+    /** Which recipe to display. Defaults to the first. */
+    recipe?: FusionRecipe
+    owned?: ReadonlySet<string>
+    onSelect?: (id: string) => void
 }
 
-export default function EvolutionCard({ evolution }: Props) {
+export default function EvolutionCard({
+    evolution,
+    recipe,
+    owned,
+    onSelect,
+}: Props) {
+    const shown = recipe ?? evolution.recipes[0]
+
     return (
-        <div className="border p-3 bg-[#c89b8c] space-y-2">
-            {/* Requirements */}
-            <div className="flex items-center justify-center gap-2 text-sm">
-                {evolution.recipes[0].requires.map((req, i) => {
-                    if (Array.isArray(req)) {
-                        return (
-                            <div key={i} className="flex items-center gap-1">
-                                {req.map((option, idx) => (
-                                    <div key={option} className="flex items-center gap-1">
-                                        <BallIcon
-                                            id={option}
-                                            name={option}
-                                            description=""
-                                        />
-                                        {idx < req.length - 1 && (
-                                            <span className="font-bold" style={{fontSize: 60}}>/</span>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        )
-                    }
+        <div className="flex flex-col gap-3 rounded-lg border border-black/20 bg-[#c89b8c] p-4">
+            {shown && (
+                <RecipeRow recipe={shown} owned={owned} onSelect={onSelect} />
+            )}
 
-                    return (
-                        <>
-                            <BallIcon
-                                key={req}
-                                id={req}
-                                name={req}
-                                description=""
-                            />
-                            {i === 0 && (<span className="font-bold" style={{fontSize: 60}}>+</span>)}
-                        </>
-                    )
-                })}
+            <div className="text-center text-xl font-bold opacity-70">=</div>
 
-            </div>
-
-            <div className="text-center font-bold">=</div>
-
-            {/* Result */}
             <div className="flex flex-col items-center gap-2">
                 <BallIcon
                     id={evolution.id}
                     name={evolution.name}
                     description={evolution.description}
+                    onClick={onSelect ? () => onSelect(evolution.id) : undefined}
                 />
-
                 <strong>{evolution.name}</strong>
-
-                <p className="text-sm text-center opacity-80">
+                <BadgeRow
+                    damageTypes={evolution.damageTypes}
+                    statusEffects={evolution.statusEffects}
+                />
+                <p className="text-center text-sm opacity-80">
                     {evolution.description}
                 </p>
             </div>

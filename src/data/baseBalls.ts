@@ -212,6 +212,16 @@ export const BASE_BALLS: BaseBallDefinition[] = [
     },
 
     {
+        id: 'time',
+        name: 'Time',
+        description:
+            'Explodes into a time snare upon hitting an enemy, which stays on the field for 20 seconds and freezes enemies inside it.',
+        damageTypes: ['Base'],
+        statusEffects: ['TimeSnare'],
+        unlockCondition: { type: 'unknown' },
+    },
+
+    {
         id: 'vampire',
         name: 'Vampire',
         description:

@@ -11,3 +11,7 @@ export function getUnlockText(unlock: UnlockCondition): string {
 
     return 'Unlock condition unknown'
 }
+
+export function isUnlockedByDefault(unlock: UnlockCondition): boolean {
+    return unlock.type === 'default'
+}

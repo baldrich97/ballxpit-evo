@@ -32,6 +32,14 @@ export type StatusEffect =
     | 'Infest'
     | 'MosquitoSpawn'
     | 'VampireBatSpawn'
+    | 'FireworkSpawn'
+    | 'Leech'
+    | 'Lovestruck'
+    | 'Venom'
+    | 'TimeSnare'
+    | 'Timestop'
+    | 'TimeBombSpawn'
+    | 'SniperBabyBallSpawn'
 
 // --------------------
 // Fusion recipes
@@ -73,7 +81,7 @@ export interface EvolvedBallDefinition {
 // --------------------
 
 export interface UnlockCondition {
-    type: 'default' | 'clear_pit'
+    type: 'default' | 'clear_pit' | 'unknown'
     pitName?: string
 }
 
